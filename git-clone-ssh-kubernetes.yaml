@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: gitlab-parser
+  name: git-clone-pod
+spec:
+  containers:
+  - image: nginx
+    name: nginx-cont
+    volumeMounts:
+    - name: raghu-volume
+      mountPath: /usr/share/
+  initContainers:
+  - image: alpine/git
+    name: git
+    command:
+    - sh
+    - -c
+    - |
+      # Clone the Git repository
+      git clone https://github.com/Raghu0461/k8s-persistent-volumes.git /temp-repo
+    volumeMounts:
+    - name: raghu-volume
+      mountPath: /temp-repo
+      #readOnly: true
+  volumes:
+  - name: raghu-volume
+    emptyDir: {}
